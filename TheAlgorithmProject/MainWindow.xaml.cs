@@ -23,6 +23,7 @@ namespace TheAlgorithmProject
         public MainWindow()
         {
             InitializeComponent();
+            //egy proba comment
         }
     }
 }
