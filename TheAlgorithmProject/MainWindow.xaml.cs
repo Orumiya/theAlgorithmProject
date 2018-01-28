@@ -24,6 +24,8 @@ namespace TheAlgorithmProject
         {
             InitializeComponent();
             //egy proba comment
+
+            string name = "name";
         }
     }
 }
