@@ -23,11 +23,7 @@ namespace TheAlgorithmProject
         public MainWindow()
         {
             InitializeComponent();
-            //egy proba 2
-            int number = 7;
-            //egy proba comment
-
-            string name = "name";
+            
         }
     }
 }
