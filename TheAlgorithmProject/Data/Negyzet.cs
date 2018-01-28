@@ -10,9 +10,30 @@ namespace TheAlgorithmProject.Data
 {
     class Negyzet : GameElement
     {
+        private static Random rnd = new Random();
+
+        private int number;
+
+        public int Number
+        {
+            get { return number; }
+            set { number = value; }
+        }
+
+        private int negyzetszelesseg;
+
+        public int Negyzetszelesseg
+        {
+            get { return negyzetszelesseg; }
+            set { negyzetszelesseg = value; }
+        }
+
+
         public Negyzet()
         {
-            Shape = new RectangleGeometry(new Rect(Location.X, Location.Y, 30,30));
+            Number = rnd.Next(0, 10);
+            Negyzetszelesseg = 30;
+            Shape = new RectangleGeometry(new Rect(Location.X, Location.Y, Negyzetszelesseg,Negyzetszelesseg));
         }
     }
 }
