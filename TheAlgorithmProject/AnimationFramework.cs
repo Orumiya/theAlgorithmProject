@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
@@ -50,8 +51,10 @@ namespace TheAlgorithmProject
                 timer.Interval = new TimeSpan(0, 0, 0, 0,1);
                 timer.Tick += Timer_Tick;
                 count = 0;
-                Bubblesort();
+                ThreadStart bubblethreadStart = new ThreadStart(Bubblesort);
+                Thread bubblethread = new Thread(bubblethreadStart);
 
+                bubblethread.Start();
                 this.InvalidateVisual();
             }
         }
@@ -69,11 +72,12 @@ namespace TheAlgorithmProject
                 if (index - ide > 0)
                 {
                     Balramozgat(index, ide);
-                }else
+                }
+                else
                 {
                     Jobbramozgat(index, ide);
                 }
-                
+
 
             }
             else if (holVan == Allapotok.BalraVan || holVan == Allapotok.JobbraVan)
@@ -94,11 +98,22 @@ namespace TheAlgorithmProject
             base.OnRender(drawingContext);
             if (Animation != null)
             {
+                
                 for (int i = 0; i < Animation.Array.Count; i++)
                 {
-                    drawingContext.DrawGeometry(Brushes.Azure, new Pen(Brushes.Black, 2), Animation.Array[i].GetTransformedGeometry());
-                    FormattedText formattedText = new FormattedText(Animation.Array[i].Number.ToString(), new CultureInfo(1), FlowDirection.LeftToRight, new Typeface("Arial"), 20, Brushes.Black);
-                    drawingContext.DrawText(formattedText, new Point(Animation.Array[i].Location.X + Animation.Array[i].Negyzetszelesseg/3, Animation.Array[i].Location.Y + Animation.Array[i].Negyzetszelesseg / 4));
+                    if (!Animation.Array[i].VizsgalatAlatt)
+                    {
+                        drawingContext.DrawGeometry(Brushes.Azure, new Pen(Brushes.Black, 2), Animation.Array[i].GetTransformedGeometry());
+                        FormattedText formattedText = new FormattedText(Animation.Array[i].Number.ToString(), new CultureInfo(1), FlowDirection.LeftToRight, new Typeface("Arial"), 20, Brushes.Black);
+                        drawingContext.DrawText(formattedText, new Point(Animation.Array[i].Location.X + Animation.Array[i].Negyzetszelesseg / 3, Animation.Array[i].Location.Y + Animation.Array[i].Negyzetszelesseg / 4));
+                    }
+                    else
+                    {
+                        drawingContext.DrawGeometry(Brushes.Aquamarine, new Pen(Brushes.Black, 2), Animation.Array[i].GetTransformedGeometry());
+                        FormattedText formattedText = new FormattedText(Animation.Array[i].Number.ToString(), new CultureInfo(1), FlowDirection.LeftToRight, new Typeface("Arial"), 20, Brushes.Black);
+                        drawingContext.DrawText(formattedText, new Point(Animation.Array[i].Location.X + Animation.Array[i].Negyzetszelesseg / 3, Animation.Array[i].Location.Y + Animation.Array[i].Negyzetszelesseg / 4));
+                    }
+                    
                 }
             }
         }
@@ -152,7 +167,7 @@ namespace TheAlgorithmProject
             else
             {
                 holVan = Allapotok.Helyen;
-                //timer.Stop();
+                timer.Stop();
             }
         }
 
@@ -172,6 +187,7 @@ namespace TheAlgorithmProject
                 else
                 {
                     holVan = Allapotok.Helyrerak;
+                    count = 0;
                 }
             }else
             {
@@ -187,6 +203,7 @@ namespace TheAlgorithmProject
                 else
                 {
                     holVan = Allapotok.Helyrerak;
+                    count = 0;
                 }
             }
             
@@ -196,21 +213,45 @@ namespace TheAlgorithmProject
         {
             for (int i = Animation.Array.Count - 1; i > 1; i--)
             {
-                for (int j = 0; j < i - 1; j++)
+                for (int j = 0; j < i; j++)
                 {
                     if (Animation.Array[j].Number > Animation.Array[j + 1].Number)
                     {
-                        timer.Start();
-                        int csere = Animation.Array[j].Number;
+                        Negyzet csere = Animation.Array[j];
                         Animation.Index = j;
+                        Animation.Array[j].VizsgalatAlatt = true;
+                        Animation.Array[j+1].VizsgalatAlatt = true;
                         Animation.Ide = j + 1;
-                        Animation.Array[j].Number = Animation.Array[j + 1].Number;
-                        Animation.Array[j + 1].Number = csere;
-                        
+                        Display();
+                        Thread.Sleep(3000);
+                        Animation.Array[j] = Animation.Array[j + 1];
+                        Animation.Array[j + 1] = csere;
+                        Animation.Array[j].VizsgalatAlatt = false;
+                        Animation.Array[j + 1].VizsgalatAlatt = false;
+
                     }
-                    
+                    else
+                    {
+                        Negyzet csere = Animation.Array[j];
+                        Animation.Array[j].VizsgalatAlatt = true;
+                        Animation.Array[j + 1].VizsgalatAlatt = true;
+                        Animation.Index = j;
+                        Animation.Ide = j;
+                        Display();
+                        Thread.Sleep(3000);
+                        Animation.Array[j].VizsgalatAlatt = false;
+                        Animation.Array[j + 1].VizsgalatAlatt = false;
+                    }
+
                 }
             }
+
+        }
+
+        public void Display()
+        {
+            timer.Start();
+            
         }
 
     }

@@ -6,8 +6,10 @@
         xmlns:local="clr-namespace:TheAlgorithmProject"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        <local:AnimationFramework />
 
-    </Grid>
+    
+        <Frame x:Name="mainFrame" NavigationUIVisibility="Hidden">
+        
+    </Frame>
+    
 </Window>

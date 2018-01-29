@@ -28,11 +28,12 @@ namespace TheAlgorithmProject.Data
             set { negyzetszelesseg = value; }
         }
 
-
+        public bool VizsgalatAlatt { get; set; }
         public Negyzet()
         {
             Number = rnd.Next(0, 10);
             Negyzetszelesseg = 30;
+            VizsgalatAlatt = false;
             Shape = new RectangleGeometry(new Rect(Location.X, Location.Y, Negyzetszelesseg,Negyzetszelesseg));
         }
     }

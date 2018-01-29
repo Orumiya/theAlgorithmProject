@@ -16,15 +16,15 @@ using System.Windows.Shapes;
 namespace TheAlgorithmProject
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for AnimPage.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class AnimPage : Page
     {
-        public MainWindow()
+        private Frame mainFrame;
+        public AnimPage(Frame mainFrame)
         {
             InitializeComponent();
-            Menu page1 = new Menu(this.mainFrame);
-            this.mainFrame.Content = page1;
+            this.mainFrame = mainFrame;
         }
     }
 }
